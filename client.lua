@@ -81,7 +81,7 @@ RegisterNUICallback('setCam', function(data)
         SetCamActiveWithInterp(cam, cam2, cam2Time, true, true)
         SetEntityCoords(PlayerPedId(), campos.x, campos.y, campos.z)
     elseif type == "normal" then
-        local campos = QB.Spawns[location].coords
+        local campos = DC.Spawns[location].coords
 
         cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", campos.x, campos.y, campos.z + camZPlus1, 300.00,0.00,0.00, 110.00, false, 0)
         PointCamAtCoord(cam2, campos.x, campos.y, campos.z + pointCamCoords)
@@ -182,7 +182,7 @@ RegisterNUICallback('spawnplayer', function(data)
         Wait(500)
         DoScreenFadeIn(250)
     elseif type == "normal" then
-        local pos = QB.Spawns[location].coords
+        local pos = DC.Spawns[location].coords
         SetDisplay(false)
         DoScreenFadeOut(500)
         Wait(2000)
@@ -236,7 +236,7 @@ RegisterNetEvent('dcr-houses:client:setHouseConfig', function(houseConfig)
 end)
 
 RegisterNetEvent('dcr-spawn:client:setupSpawnUI', function(cData, new)
-    if QB.EnableApartments then
+    if DC.EnableApartments then
         exports['dcr-core']:TriggerCallback('apartments:GetOwnedApartment', function(result)
             if result ~= nil then
                 TriggerEvent('dcr-spawn:client:setupSpawns', cData, false, nil)
@@ -256,7 +256,7 @@ end)
 RegisterNetEvent('dcr-spawn:client:setupSpawns', function(cData, new, apps)
     newPlayer = new
     if not new then
-        if QB.EnableHouses then
+        if DC.EnableHouses then
             exports['dcr-core']:TriggerCallback('dcr-spawn:server:getOwnedHouses', function(houses)
                 local myHouses = {}
                 if houses ~= nil then
@@ -271,18 +271,18 @@ RegisterNetEvent('dcr-spawn:client:setupSpawns', function(cData, new, apps)
                 Wait(500)
                 SendNUIMessage({
                     action = "setupLocations",
-                    locations = QB.Spawns,
+                    locations = DC.Spawns,
                     houses = myHouses,
                 })
             end, cData.citizenid)
         else
             SendNUIMessage({
                 action = "setupLocations",
-                locations = QB.Spawns,
+                locations = DC.Spawns,
                 houses = {},
             })
         end
-    elseif new and QB.EnableApartments then
+    elseif new and DC.EnableApartments then
         SendNUIMessage({
             action = "setupAppartements",
             locations = apps,
@@ -290,13 +290,13 @@ RegisterNetEvent('dcr-spawn:client:setupSpawns', function(cData, new, apps)
     elseif new then 
         SendNUIMessage({
             action = "setupLocations",
-            locations = QB.FirstSpawns ,
+            locations = DC.FirstSpawns ,
             new = true,
         })
     else
         SendNUIMessage({
             action = "setupLocations",
-            locations = QB.Spawns,
+            locations = DC.Spawns,
             houses = {},
         })
     end
