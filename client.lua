@@ -7,12 +7,12 @@ local cam2Time = 1000
 local choosingSpawn = false
 local newPlayer = false
 
-RegisterNetEvent('qbr-spawn:client:openUI', function(value)
+RegisterNetEvent('dcr-spawn:client:openUI', function(value)
     SetEntityVisible(PlayerPedId(), false)
     DoScreenFadeOut(250)
     Wait(1000)
     DoScreenFadeIn(250)
-    exports['qbr-core']:GetPlayerData(function(PlayerData)
+    exports['dcr-core']:GetPlayerData(function(PlayerData)
         cam = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + camZPlus1, -85.00, 0.00, 0.00, 100.00, false, 0)
         SetCamActive(cam, true)
         RenderScriptCams(true, false, 1, true, true)
@@ -50,7 +50,7 @@ RegisterNUICallback('setCam', function(data)
     end
 
     if type == "current" then
-        exports['qbr-core']:GetPlayerData(function(PlayerData)
+        exports['dcr-core']:GetPlayerData(function(PlayerData)
             cam2 = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + camZPlus1, 300.00,0.00,0.00, 110.00, false, 0)
             PointCamAtCoord(cam2, PlayerData.position.x, PlayerData.position.y, PlayerData.position.z + pointCamCoords)
             SetCamActiveWithInterp(cam2, cam, cam1Time, true, true)
@@ -119,8 +119,8 @@ RegisterNUICallback('chooseAppa', function(data)
     DoScreenFadeOut(500)
     Wait(5000)
     TriggerServerEvent("apartments:server:CreateApartment", appaYeet, Apartments.Locations[appaYeet].label)
-    TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
-    TriggerEvent('QBCore:Client:OnPlayerLoaded')
+    TriggerServerEvent('DinoCore:Server:OnPlayerLoaded')
+    TriggerEvent('DinoCore:Client:OnPlayerLoaded')
     FreezeEntityPosition(ped, false)
     RenderScriptCams(false, true, 500, true, true)
     SetCamActive(cam, false)
@@ -134,7 +134,7 @@ RegisterNUICallback('spawnplayer', function(data)
     local location = tostring(data.spawnloc)
     local type = tostring(data.typeLoc)
     local ped = PlayerPedId()
-    local PlayerData = exports['qbr-core']:GetPlayerData()
+    local PlayerData = exports['dcr-core']:GetPlayerData()
     local insideMeta = PlayerData.metadata['inside']
     if type == "current" then
         SetDisplay(false)
@@ -146,14 +146,14 @@ RegisterNUICallback('spawnplayer', function(data)
 
         -- if insideMeta.house ~= nil then
         --     local houseId = insideMeta.house
-        --     TriggerEvent('qbr-houses:client:LastLocationHouse', houseId)
+        --     TriggerEvent('dcr-houses:client:LastLocationHouse', houseId)
         -- elseif insideMeta.apartment.apartmentType ~= nil or insideMeta.apartment.apartmentId ~= nil then
         --     local apartmentType = insideMeta.apartment.apartmentType
         --     local apartmentId = insideMeta.apartment.apartmentId
-        --     TriggerEvent('qbr-apartments:client:LastLocationHouse', apartmentType, apartmentId)
+        --     TriggerEvent('dcr-apartments:client:LastLocationHouse', apartmentType, apartmentId)
         -- end
-        TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
-        TriggerEvent('QBCore:Client:OnPlayerLoaded')
+        TriggerServerEvent('DinoCore:Server:OnPlayerLoaded')
+        TriggerEvent('DinoCore:Client:OnPlayerLoaded')
         FreezeEntityPosition(ped, false)
         RenderScriptCams(false, true, 500, true, true)
         SetCamActive(cam, false)
@@ -167,11 +167,11 @@ RegisterNUICallback('spawnplayer', function(data)
         SetDisplay(false)
         DoScreenFadeOut(500)
         Wait(2000)
-        TriggerEvent('qbr-houses:client:enterOwnedHouse', location)
-        TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
-        TriggerEvent('QBCore:Client:OnPlayerLoaded')
-        TriggerServerEvent('qbr-houses:server:SetInsideMeta', 0, false)
-        TriggerServerEvent('qbr-apartments:server:SetInsideMeta', 0, 0, false)
+        TriggerEvent('dcr-houses:client:enterOwnedHouse', location)
+        TriggerServerEvent('DinoCore:Server:OnPlayerLoaded')
+        TriggerEvent('DinoCore:Client:OnPlayerLoaded')
+        TriggerServerEvent('dcr-houses:server:SetInsideMeta', 0, false)
+        TriggerServerEvent('dcr-apartments:server:SetInsideMeta', 0, 0, false)
         FreezeEntityPosition(ped, false)
         RenderScriptCams(false, true, 500, true, true)
         SetCamActive(cam, false)
@@ -187,10 +187,10 @@ RegisterNUICallback('spawnplayer', function(data)
         DoScreenFadeOut(500)
         Wait(2000)
         SetEntityCoords(ped, pos.x, pos.y, pos.z)
-        TriggerServerEvent('QBCore:Server:OnPlayerLoaded')
-        TriggerEvent('QBCore:Client:OnPlayerLoaded')
-        TriggerServerEvent('qbr-houses:server:SetInsideMeta', 0, false)
-        TriggerServerEvent('qbr-apartments:server:SetInsideMeta', 0, 0, false)
+        TriggerServerEvent('DinoCore:Server:OnPlayerLoaded')
+        TriggerEvent('DinoCore:Client:OnPlayerLoaded')
+        TriggerServerEvent('dcr-houses:server:SetInsideMeta', 0, false)
+        TriggerServerEvent('dcr-apartments:server:SetInsideMeta', 0, 0, false)
         Wait(500)
         SetEntityCoords(ped, pos.x, pos.y, pos.z)
         SetEntityHeading(ped, pos.h)
@@ -206,7 +206,7 @@ RegisterNUICallback('spawnplayer', function(data)
     end
 
     if newPlayer then
-        TriggerEvent('qbr-clothing:client:newPlayer')
+        TriggerEvent('dcr-clothing:client:newPlayer')
         newPlayer = false
     end
 end)
@@ -231,33 +231,33 @@ CreateThread(function()
     end
 end)
 
-RegisterNetEvent('qbr-houses:client:setHouseConfig', function(houseConfig)
+RegisterNetEvent('dcr-houses:client:setHouseConfig', function(houseConfig)
     Config.Houses = houseConfig
 end)
 
-RegisterNetEvent('qbr-spawn:client:setupSpawnUI', function(cData, new)
+RegisterNetEvent('dcr-spawn:client:setupSpawnUI', function(cData, new)
     if QB.EnableApartments then
-        exports['qbr-core']:TriggerCallback('apartments:GetOwnedApartment', function(result)
+        exports['dcr-core']:TriggerCallback('apartments:GetOwnedApartment', function(result)
             if result ~= nil then
-                TriggerEvent('qbr-spawn:client:setupSpawns', cData, false, nil)
-                TriggerEvent('qbr-spawn:client:openUI', true)
+                TriggerEvent('dcr-spawn:client:setupSpawns', cData, false, nil)
+                TriggerEvent('dcr-spawn:client:openUI', true)
                 TriggerEvent("apartments:client:SetHomeBlip", result.type)
             else
-                TriggerEvent('qbr-spawn:client:setupSpawns', cData, true, Apartments.Locations)
-                TriggerEvent('qbr-spawn:client:openUI', true)
+                TriggerEvent('dcr-spawn:client:setupSpawns', cData, true, Apartments.Locations)
+                TriggerEvent('dcr-spawn:client:openUI', true)
             end
         end, cData.citizenid)
     else
-        TriggerEvent('qbr-spawn:client:setupSpawns', cData, new, nil)
-        TriggerEvent('qbr-spawn:client:openUI', true)
+        TriggerEvent('dcr-spawn:client:setupSpawns', cData, new, nil)
+        TriggerEvent('dcr-spawn:client:openUI', true)
     end
 end)
 
-RegisterNetEvent('qbr-spawn:client:setupSpawns', function(cData, new, apps)
+RegisterNetEvent('dcr-spawn:client:setupSpawns', function(cData, new, apps)
     newPlayer = new
     if not new then
         if QB.EnableHouses then
-            exports['qbr-core']:TriggerCallback('qbr-spawn:server:getOwnedHouses', function(houses)
+            exports['dcr-core']:TriggerCallback('dcr-spawn:server:getOwnedHouses', function(houses)
                 local myHouses = {}
                 if houses ~= nil then
                     for i = 1, (#houses), 1 do
