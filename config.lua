@@ -1,12 +1,12 @@
-QB = {}
+DCR = {}
 
 -- Enable spawning inside houses from the spawn selector
-QB.EnableHouses = false
+DCR.EnableHouses = false
 
 -- Enable spawning inside apartments from the spawn selector
-QB.EnableApartments = false
+DCR.EnableApartments = false
 
-QB.FirstSpawns = {
+DCR.FirstSpawns = {
     ["emerald"] = {
         coords = {
             x = 1417.818,
@@ -29,7 +29,7 @@ QB.FirstSpawns = {
     },
 }
 
-QB.Spawns = {
+DCR.Spawns = {
     ["emerald"] = {
         coords = {
             x = 1417.818,
